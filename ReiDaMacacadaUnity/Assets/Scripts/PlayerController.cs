@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public float velocidade, forcaPulo;
+    public float horizontalMove, SpeedWalk, forceJump;
     private SpriteRenderer spriteMacaco;
     public Rigidbody2D corpoMacaco;
     public Text txtPontos;
     public int pontos;
     private bool noChao;
-   
+    private Animator anim;
+    public TempoIniciar tempoIniciar;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,28 +23,44 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movimentacao();
+        if (tempoIniciar.comecarJogo == true)
+        {
+            horizontalMove = Input.GetAxisRaw("Horizontal");
 
-        txtPontos.text = "" + pontos;
+            anim = GetComponent<Animator>();
+
+            Movimentacao(horizontalMove);
+
+            txtPontos.text = "" + pontos;
+        }       
     }
 
-    public void Movimentacao()
+    public void Movimentacao(float h)
     {
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            transform.Translate(Vector2.right * velocidade * Time.deltaTime);
+            transform.Translate(Vector2.right * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = false;
+            anim.SetFloat("posX", Mathf.Abs(horizontalMove));
+            anim.SetBool("Parado", false);
         }
 
-        if (Input.GetAxisRaw("Horizontal") < 0)
+        else if (Input.GetAxisRaw("Horizontal") < 0)
         {
-            transform.Translate(Vector2.left * velocidade * Time.deltaTime);
+            transform.Translate(Vector2.left * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = true;
+            anim.SetFloat("posX", Mathf.Abs(horizontalMove));
+            anim.SetBool("Parado", false);
+
         }
+        else
+        {
+            anim.SetBool("Parado", true);
+        }
+
         if (Input.GetButtonDown("Jump") && noChao == true)
         {
-            corpoMacaco.AddForce(new Vector2(0, forcaPulo));
-            noChao = false;
+            corpoMacaco.AddForce(new Vector2(0, forceJump));
         }
     }
 
@@ -61,5 +78,10 @@ public class PlayerController : MonoBehaviour
         {
             noChao = true;
         }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        noChao = false;
     }
 }

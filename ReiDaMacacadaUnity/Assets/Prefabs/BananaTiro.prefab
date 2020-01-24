@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6056928816930366080}
   m_Layer: 0
   m_Name: BananaTiro
-  m_TagString: Untagged
+  m_TagString: TagBananaP1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.06940287, y: -0.004226044}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -107,7 +107,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.31, y: 0.5}
+  m_Size: {x: 0.17119426, y: 0.29230914}
   m_EdgeRadius: 0
 --- !u!114 &-5567459350544238312
 MonoBehaviour:
@@ -122,8 +122,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceBanana: 500
-  forcaDistancia: 100
+  forcaDistancia: 0
   rbBanana: {fileID: 6056928816930366080}
+  playerBatalha: {fileID: 4638328447014464272, guid: e5b75da4124c65240acfe536b33b7432,
+    type: 3}
 --- !u!50 &6056928816930366080
 Rigidbody2D:
   serializedVersion: 4

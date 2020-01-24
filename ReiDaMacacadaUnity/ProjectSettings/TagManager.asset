@@ -6,6 +6,12 @@ TagManager:
   tags:
   - TagBanana
   - TagChao
+  - TagLimite
+  - TagPlataforma
+  - TagBananaP1
+  - TagBananaP2
+  - Ground
+  - PlayerTutorial
   layers:
   - Default
   - TransparentFX
@@ -15,8 +21,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - CamA
+  - CamB
   - 
   - 
   - 

@@ -24,5 +24,10 @@ public class BananaController : MonoBehaviour
             spownBanana.SpownBanana();
             Destroy(gameObject);
         }
+
+        if ((collision.gameObject.CompareTag("PlayerTutorial")))
+        {
+            Destroy(gameObject);
+        }
     } 
 }

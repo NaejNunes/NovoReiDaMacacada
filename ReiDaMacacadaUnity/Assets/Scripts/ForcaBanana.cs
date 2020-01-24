@@ -20,17 +20,17 @@ public class ForcaBanana : MonoBehaviour
     {
         forcaTiroBanana = bananaTiro.forcaDistancia;
 
-        if (forcaTiroBanana >= 0 && forcaTiroBanana <= 400)
+        if (forcaTiroBanana > 0 && forcaTiroBanana <= 400)
         {
             SliderBanana.GetComponent<Image>().color = Color.green;
         }
 
-        if (forcaTiroBanana > 400 && forcaTiroBanana <= 700)
+        else if (forcaTiroBanana > 400 && forcaTiroBanana <= 700)
         {
             SliderBanana.GetComponent<Image>().color = Color.yellow;
         }
 
-        if (forcaTiroBanana > 700 && forcaTiroBanana <= 1000)
+        else if(forcaTiroBanana > 700 && forcaTiroBanana <= 1000)
         {
             SliderBanana.GetComponent<Image>().color = Color.red;
         }
@@ -38,9 +38,10 @@ public class ForcaBanana : MonoBehaviour
         if (forcaTiroBanana >= 1000)
         {
             forcaTiroBanana = 1000;
-        }
+        }       
 
-           var sliderTempo = transform.GetChild(0).GetComponentInChildren<Slider>();
-           sliderTempo.value = forcaTiroBanana;               
+        var sliderTempo = transform.GetChild(0).GetComponentInChildren<Slider>();
+           sliderTempo.value = forcaTiroBanana;
+       
     }       
 }

@@ -12,23 +12,25 @@ public class PlayerBatalha : MonoBehaviour
     public Rigidbody2D corpoMacaco;
     public Text txtPontos;
     public int bananas, vida;
-    private bool noChao, atirarAtivo;
+    public bool noChao, atirarAtivo, direcaoR;
     private Animator anim;
     public TempoIniciar tempoIniciar;
     public GameObject[] vidas;
-    public GameObject painelVencedor, bananaObj, forcaSlider;
+    public GameObject painelVencedor, bananaObj, bananaObj2, forcaSlider, forcaSlider2;
     public AudioClip error;
     public BananaTiro bananaTiro;
+    public BananaTiro2 bananaTiro2;
     public ForcaBanana forcaBanana;
+    public ForcaBanana2 forcaBanana2;
 
     // Start is called before the first frame update
     void Start()
     {
         vida = 3;
-        noChao = true;
         corpoMacaco = gameObject.GetComponent<Rigidbody2D>();
 
         forcaSlider.SetActive(false);
+        forcaSlider2.SetActive(false);
 
     }
 
@@ -49,18 +51,39 @@ public class PlayerBatalha : MonoBehaviour
 
             Acoes();
 
-            txtPontos.text = "" + bananas;       
-        }                   
+            txtPontos.text = "" + bananas;
+
+            if (GetComponent<SpriteRenderer>().flipX == true)
+            {
+                direcaoR = false;               
+            }
+
+            else if (GetComponent<SpriteRenderer>().flipX == false)
+            {
+                direcaoR = true;              
+            }
+        }
+
+        if (bananaTiro.forcaDistancia >= 1000)
+        {
+            bananaTiro.forcaDistancia = 1000;
+        }
+        if (bananaTiro2.forcaDistancia2 <= -1000)
+        {
+            bananaTiro2.forcaDistancia2 = -1000;
+        }
+
     }
 
     public void Movimentacao(float h)
     {
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
+            
             transform.Translate(Vector2.right * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = false;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
-            anim.SetBool("Parado", false);
+            anim.SetBool("Parado", false);         
         }
 
         else if (Input.GetAxisRaw("Horizontal") < 0)
@@ -68,7 +91,7 @@ public class PlayerBatalha : MonoBehaviour
             transform.Translate(Vector2.left * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = true;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
-            anim.SetBool("Parado", false);
+            anim.SetBool("Parado", false);         
         }
         else
         {
@@ -78,7 +101,7 @@ public class PlayerBatalha : MonoBehaviour
         if (Input.GetButtonDown("Jump") && noChao == true)
         {
             corpoMacaco.AddForce(new Vector2(0, forceJump));
-        }
+        }      
     }
 
     public void Acoes()
@@ -93,74 +116,48 @@ public class PlayerBatalha : MonoBehaviour
             AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
         }
 
-        if (Input.GetKey(KeyCode.O) && bananas > 0)
+        if (Input.GetKey(KeyCode.O) && bananas > 0 && direcaoR == true)
         {
             bananaTiro.forcaDistancia += 10;
+            bananaTiro2.forcaDistancia2 = 0;
+            forcaBanana2.forcaTiroAuxiliar = 0;
             forcaSlider.SetActive(true);
+            forcaSlider2.SetActive(false);
         }
-        else if (Input.GetKeyUp(KeyCode.O) && bananas > 0)
+
+        else if (Input.GetKey(KeyCode.O) && bananas > 0 && direcaoR == false)
         {
-            Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX, PlayerBatalha.posY, PlayerBatalha.posZ + 10f), Quaternion.identity);
+            bananaTiro2.forcaDistancia2 -= 10;
+            bananaTiro.forcaDistancia = 0;
+            forcaBanana2.forcaTiroAuxiliar += 10;
+            forcaSlider.SetActive(false);
+            forcaSlider2.SetActive(true);
+        }
+        else if (Input.GetKeyUp(KeyCode.O) && bananas > 0 && direcaoR == true)
+        {
+            Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX + 1, PlayerBatalha.posY +1, PlayerBatalha.posZ + 10f), Quaternion.identity);
             bananaTiro.forcaDistancia = 0;
             forcaBanana.forcaTiroBanana = 0;
+            bananaTiro2.forcaDistancia2 = 0;
+            forcaBanana2.forcaTiroAuxiliar = 0;
             bananas--;
             forcaSlider.SetActive(false);
-            Debug.Log(bananaTiro.forcaDistancia);
-
+        }
+        else if (Input.GetKeyUp(KeyCode.O) && bananas > 0 && direcaoR == false)
+        {
+            Instantiate(this.bananaObj2, new Vector3(PlayerBatalha.posX - 1, PlayerBatalha.posY + 1, PlayerBatalha.posZ + 10f), Quaternion.identity);
+            bananaTiro.forcaDistancia = 0;
+            forcaBanana.forcaTiroBanana = 0;
+            bananaTiro2.forcaDistancia2 = 0;
+            forcaBanana2.forcaTiroAuxiliar = 0;
+            bananas--;
+            forcaSlider2.SetActive(false);
         }
 
         else if (Input.GetKey(KeyCode.O) && bananas == 0)
         {
             AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
-        }
-        //JOGAR BANANA
-        /*
-        if (Input.GetKeyDown(KeyCode.O) && bananas >= 1)
-        {
-            Debug.Log(tempoForca);
-            tempoForca = 0;
-            atirarAtivo = true;
-
-            if (tempoForca >= 0 && tempoForca <= 5)
-            {
-                bananaTiro.forcaDistancia = 50;
-
-                if (Input.GetKeyUp(KeyCode.O))
-                {
-                    bananas--;
-                    Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX, PlayerBatalha.posY, PlayerBatalha.posZ + 10f), Quaternion.identity);
-                    atirarAtivo = false;
-
-                }
-            }
-
-            if (tempoForca >5 && tempoForca <=10)
-            {
-                bananaTiro.forcaDistancia = 200;
-
-                if (Input.GetKeyUp(KeyCode.O))
-                {
-                    bananas--;
-                    Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX, PlayerBatalha.posY, PlayerBatalha.posZ + 10f), Quaternion.identity);
-                    atirarAtivo = false;
-
-                }
-            }
-
-            if (tempoForca >10 && tempoForca <= 15)
-            {
-                bananaTiro.forcaDistancia = 400;
-
-                if (Input.GetKeyUp(KeyCode.O))
-                {
-                    bananas--;
-                    Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX, PlayerBatalha.posY, PlayerBatalha.posZ + 10f), Quaternion.identity);
-                    atirarAtivo = false;
-
-                }
-            }         
-        }
-        */
+        }       
 
     }
 
@@ -211,7 +208,7 @@ public class PlayerBatalha : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("TagChao"))
+        if (collision.gameObject.CompareTag("TagChao") || collision.gameObject.CompareTag("TagPlataforma"))
         {
             noChao = true;
         }
@@ -219,6 +216,9 @@ public class PlayerBatalha : MonoBehaviour
 
     public void OnCollisionExit2D(Collision2D collision)
     {
-        noChao = false;
+        if (collision.gameObject.CompareTag("TagChao") || collision.gameObject.CompareTag("TagPlataforma"))
+        {
+            noChao = false;
+        }
     }
 }

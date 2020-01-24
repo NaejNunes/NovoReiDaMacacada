@@ -6,20 +6,26 @@ public class BananaTiro : MonoBehaviour
 {
     public float forceBanana, forcaDistancia;
     public Rigidbody2D  rbBanana;
+    public PlayerBatalha playerBatalha;  
 
     // Start is called before the first frame update
     void Start()
-    {       
-            rbBanana.AddForce(new Vector2(forcaDistancia, forceBanana));
+    {    
+            rbBanana.AddForce(new Vector2(forcaDistancia, forceBanana));      
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (forcaDistancia >= 1000)
+       
+        
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("TagLimite") || collision.gameObject.CompareTag("TagChao"))
         {
-            forcaDistancia = 1000;
+            Destroy(gameObject);
         }
-        //INSTANCIA A BANANA E QUANDO MAIS SEGURAR MAIS AUMENTA A FORCA
     }
 }

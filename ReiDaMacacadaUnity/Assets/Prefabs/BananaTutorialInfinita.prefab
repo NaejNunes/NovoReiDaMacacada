@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1950901859669799159}
   - component: {fileID: 8788736054349935198}
   - component: {fileID: 8996819289156230109}
-  - component: {fileID: -6848388914064563097}
+  - component: {fileID: -6483389857887145393}
   m_Layer: 0
-  m_Name: BananaTutorial
+  m_Name: BananaTutorialInfinita
   m_TagString: TagBananaTuto
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +128,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-6848388914064563097
+--- !u!114 &-6483389857887145393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,7 +137,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8559584594996787603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bf52a1d2927a1a4fb992250e3f4ec7c, type: 3}
+  m_Script: {fileID: 11500000, guid: ad27bc574783b6344a1d2eabbf72a0b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spownBanana: {fileID: 0}
+  bananaInfinita: {fileID: 8559584594996787603}
+  player2: {fileID: 1291933948022443616, guid: 13bc2bc140d219c42b72c9d0118030a1, type: 3}
+  player1: {fileID: 38083648383591109, guid: 3a3a4d20658742342a35bd052c1270f4, type: 3}

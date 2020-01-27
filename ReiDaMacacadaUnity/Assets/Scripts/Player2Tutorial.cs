@@ -7,155 +7,246 @@ using UnityEngine.UI;
 public class Player2Tutorial : MonoBehaviour
 {
     public static float posX, posY, posZ;
-    public float horizontalMove, SpeedWalk, forceJump, tempoForca, forca;
+    public float horizontalMove, SpeedWalk, forceJump, tempoForca, forca, tempo;
     private SpriteRenderer spriteMacaco;
     public Rigidbody2D corpoMacaco;
     public Text txtPontos;
     public int bananas, vida;
-    public bool noChao, atirarAtivo, direcaoR;
+    public bool noChao, atirarAtivo, direcaoR, tutorial1, tutorial2, tutorial3, tutorial4, tutorial5, fimTutorial, tuto1Ativado, tuto1Ativado2, puloCheck, bananaTutoCheck, tiroCheck, curaVidaCheck, player1Pronto, player2Pronto;
     private Animator anim;
-    public GameObject[] vidas;
-    public GameObject  bananaObj, bananaObj2, forcaSlider, forcaSlider2;
+    public GameObject[] vidas, tutoriais;
+    public GameObject bananaObj, bananaObj2, forcaSlider, forcaSlider2, painelPronto, fimTuto, bananaInfinita;
     public AudioClip error;
-    public BananaTiro bananaTiro;
-    public BananaTiro2 bananaTiro2;
-    public ForcaBanana forcaBanana;
-    public ForcaBanana2 forcaBanana2;
+    public BananaTiro1 bananaTiro1;
+    public BananaTiro3 bananaTiro3;
+    public ForcaBanana1 forcaBanana1;
+    public ForcaBanana3 forcaBanana3;
 
     // Start is called before the first frame update
     void Start()
     {
-        vida = 3;
+        vida = 2;
         corpoMacaco = gameObject.GetComponent<Rigidbody2D>();
 
         forcaSlider.SetActive(false);
         forcaSlider2.SetActive(false);
-
+        tutorial1 = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(bananaTiro1.forcaDistancia);
         posX = transform.position.x;
         posY = transform.position.y;
         posZ = transform.position.z;
-       
-            horizontalMove = Input.GetAxisRaw("Horizontal2");
 
-            anim = GetComponent<Animator>();
+        horizontalMove = Input.GetAxisRaw("Horizontal2");
 
-            Movimentacao(horizontalMove);
+        anim = GetComponent<Animator>();
 
-            Acoes();
+        Movimentacao(horizontalMove);
 
-            txtPontos.text = "" + bananas;
+        Acoes();
+        ControladorVida();
 
-            if (GetComponent<SpriteRenderer>().flipX == true)
-            {
-                direcaoR = false;               
-            }
+        txtPontos.text = "" + bananas;
 
-            else if (GetComponent<SpriteRenderer>().flipX == false)
-            {
-                direcaoR = true;              
-            }
-        
-
-        if (bananaTiro.forcaDistancia >= 1000)
+        if (GetComponent<SpriteRenderer>().flipX == true)
         {
-            bananaTiro.forcaDistancia = 1000;
-        }
-        if (bananaTiro2.forcaDistancia2 <= -1000)
-        {
-            bananaTiro2.forcaDistancia2 = -1000;
+            direcaoR = false;
         }
 
+        else if (GetComponent<SpriteRenderer>().flipX == false)
+        {
+            direcaoR = true;
+        }
+
+
+        if (bananaTiro1.forcaDistancia >= 1000)
+        {
+            bananaTiro1.forcaDistancia = 1000;
+        }
+        if (bananaTiro3.forcaDistancia2 <= -1000)
+        {
+            bananaTiro3.forcaDistancia2 = -1000;
+        }
+
+        //Controle dos Tutoriais
+
+        //TUTO1 mover
+        if (tutorial1 == true)
+        {
+            tutoriais[0].SetActive(true);
+
+            if (tuto1Ativado == true && tuto1Ativado2 == true)
+            {
+                tutoriais[0].SetActive(false);
+                tutorial1 = false;
+                tutorial2 = true;
+            }
+        }
+
+        //TUTO2 pular
+        if (tutorial2 == true)
+        {
+            tutoriais[1].SetActive(true);
+
+            if (puloCheck == true)
+            {
+                tutoriais[1].SetActive(false);
+                tutorial2 = false;
+                tutorial3 = true;
+            }
+        }
+
+        //TUTO3 pegar banana
+        if (tutorial3 == true)
+        {
+            tutoriais[2].SetActive(true);
+
+            if (bananaTutoCheck == true)
+            {
+                tutoriais[2].SetActive(false);
+                tutorial3 = false;
+                tutorial4 = true;
+            }
+        }
+
+        //TUTO4 atirar direita
+        if (tutorial4 == true)
+        {
+            tutoriais[3].SetActive(true);
+
+            if (tiroCheck == true)
+            {
+                tutoriais[3].SetActive(false);
+                tutorial4 = false;
+                tutorial5 = true;
+            }
+        }
+
+        //TUTO6 curar vida
+        if (tutorial5 == true)
+        {
+            tutoriais[4].SetActive(true);
+
+            if (bananas <= 2)
+            {
+                bananaInfinita.SetActive(true);
+            }
+
+            if (curaVidaCheck == true)
+            {
+                tutorial5 = false;
+                tutoriais[4].SetActive(false);
+                fimTutorial = true;
+            }
+        }
+        if (fimTutorial == true)
+        {
+            fimTuto.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
+            {
+                painelPronto.SetActive(true);
+                fimTuto.SetActive(false);
+                player1Pronto = true;
+            }
+        }       
     }
 
     public void Movimentacao(float h)
     {
         if (Input.GetAxisRaw("Horizontal2") > 0)
         {
-            
             transform.Translate(Vector2.right * SpeedWalk * Time.deltaTime);
-            GetComponent<SpriteRenderer>().flipX = false;
+            GetComponent<SpriteRenderer>().flipX = true;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
-            anim.SetBool("Parado", false);         
+            anim.SetBool("Parado", false);
+            tuto1Ativado = true;
         }
 
         else if (Input.GetAxisRaw("Horizontal2") < 0)
         {
             transform.Translate(Vector2.left * SpeedWalk * Time.deltaTime);
-            GetComponent<SpriteRenderer>().flipX = true;
+            GetComponent<SpriteRenderer>().flipX = false;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
-            anim.SetBool("Parado", false);         
+            anim.SetBool("Parado", false);
+            tuto1Ativado2 = true;
         }
         else
         {
             anim.SetBool("Parado", true);
         }
 
-        if (Input.GetButtonDown("Jump") && noChao == true)
+        if (Input.GetButtonDown("Jump2") && noChao == true)
         {
             corpoMacaco.AddForce(new Vector2(0, forceJump));
-        }      
+        }
     }
 
     public void Acoes()
     {
         //RECUPERAR VIDA
-        if (Input.GetKeyDown(KeyCode.I) && bananas >= 5)
+        if (Input.GetKeyDown(KeyCode.M) && bananas >= 3)
         {
             vida += 1;
+            bananas -= 3;
+            curaVidaCheck = true;
         }
-        else if (Input.GetKeyDown(KeyCode.I) && bananas < 3)
+        else if (Input.GetKeyDown(KeyCode.M) && bananas < 3)
         {
             AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
         }
 
-        if (Input.GetKey(KeyCode.O) && bananas > 0 && direcaoR == true)
+        if (Input.GetKey(KeyCode.P) && bananas > 0 && direcaoR == false)
         {
-            bananaTiro.forcaDistancia += 10;
-            bananaTiro2.forcaDistancia2 = 0;
-            forcaBanana2.forcaTiroAuxiliar = 0;
+            bananaTiro1.forcaDistancia += 10;
+            bananaTiro3.forcaDistancia2 = 0;
+            forcaBanana3.forcaTiroAuxiliar = 0;
             forcaSlider.SetActive(true);
             forcaSlider2.SetActive(false);
         }
 
-        else if (Input.GetKey(KeyCode.H) && bananas > 0 && direcaoR == false)
+        else if (Input.GetKey(KeyCode.P) && bananas > 0 && direcaoR == true)
         {
-            bananaTiro2.forcaDistancia2 -= 10;
-            bananaTiro.forcaDistancia = 0;
-            forcaBanana2.forcaTiroAuxiliar += 10;
+            bananaTiro3.forcaDistancia2 -= 10;
+            bananaTiro1.forcaDistancia = 0;
+            forcaBanana3.forcaTiroAuxiliar += 10;
             forcaSlider.SetActive(false);
             forcaSlider2.SetActive(true);
         }
-        else if (Input.GetKeyUp(KeyCode.H) && bananas > 0 && direcaoR == true)
+        else if (Input.GetKeyUp(KeyCode.P) && bananas > 0 && direcaoR == true)
         {
-            Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX + 1, PlayerBatalha.posY +1, PlayerBatalha.posZ + 10f), Quaternion.identity);
-            bananaTiro.forcaDistancia = 0;
-            forcaBanana.forcaTiroBanana = 0;
-            bananaTiro2.forcaDistancia2 = 0;
-            forcaBanana2.forcaTiroAuxiliar = 0;
+            Instantiate(this.bananaObj2, new Vector3(Player2Tutorial.posX - 1, Player2Tutorial.posY + 1, Player2Tutorial.posZ + 10f), Quaternion.identity);
+            bananaTiro1.forcaDistancia = 0;
+            forcaBanana1.forcaTiroBanana = 0;
+            bananaTiro3.forcaDistancia2 = 0;
+            forcaBanana3.forcaTiroAuxiliar = 0;
             bananas--;
             forcaSlider.SetActive(false);
-        }
-        else if (Input.GetKeyUp(KeyCode.O) && bananas > 0 && direcaoR == false)
-        {
-            Instantiate(this.bananaObj2, new Vector3(PlayerBatalha.posX - 1, PlayerBatalha.posY + 1, PlayerBatalha.posZ + 10f), Quaternion.identity);
-            bananaTiro.forcaDistancia = 0;
-            forcaBanana.forcaTiroBanana = 0;
-            bananaTiro2.forcaDistancia2 = 0;
-            forcaBanana2.forcaTiroAuxiliar = 0;
-            bananas--;
             forcaSlider2.SetActive(false);
+            tiroCheck = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.P) && bananas > 0 && direcaoR == false)
+        {
+            Instantiate(this.bananaObj, new Vector3(Player2Tutorial.posX + 1, Player2Tutorial.posY + 1, Player2Tutorial.posZ + 10f), Quaternion.identity);
+            bananaTiro1.forcaDistancia = 0;
+            forcaBanana1.forcaTiroBanana = 0;
+            bananaTiro3.forcaDistancia2 = 0;
+            forcaBanana3.forcaTiroAuxiliar = 0;
+            bananas--;
+            forcaSlider.SetActive(false);
+            forcaSlider2.SetActive(false);
+            tiroCheck = true;
+
         }
 
-        else if (Input.GetKey(KeyCode.O) && bananas == 0)
+        else if (Input.GetKey(KeyCode.P) && bananas == 0)
         {
             AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
-        }       
-
+        }
     }
 
     public void ControladorVida()
@@ -188,17 +279,20 @@ public class Player2Tutorial : MonoBehaviour
             vidas[2].SetActive(false);
 
             Time.timeScale = 0;
-
         }
-
-
-    } 
+    }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("TagBanana"))
         {
             bananas++;
+        }
+
+        if (collision.gameObject.CompareTag("TagBananaTuto"))
+        {
+            bananas++;
+            bananaTutoCheck = true;
         }
     }
 
@@ -215,6 +309,8 @@ public class Player2Tutorial : MonoBehaviour
         if (collision.gameObject.CompareTag("TagChao") || collision.gameObject.CompareTag("TagPlataforma"))
         {
             noChao = false;
+            puloCheck = true;
+
         }
     }
 }

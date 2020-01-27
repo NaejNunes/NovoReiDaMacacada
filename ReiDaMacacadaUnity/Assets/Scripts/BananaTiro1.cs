@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BananaTiro : MonoBehaviour
+public class BananaTiro1 : MonoBehaviour
 {
     public float forceBanana, forcaDistancia;
     public Rigidbody2D  rbBanana;

@@ -25,7 +25,12 @@ public class BananaController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if ((collision.gameObject.CompareTag("PlayerTutorial")))
+        if ((collision.gameObject.CompareTag("Player1Tutorial")))
+        {            
+            Destroy(gameObject);
+        }
+
+        if ((collision.gameObject.CompareTag("Player2Tutorial")))
         {
             Destroy(gameObject);
         }

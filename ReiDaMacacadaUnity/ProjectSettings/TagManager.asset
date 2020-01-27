@@ -12,6 +12,9 @@ TagManager:
   - TagBananaP2
   - Ground
   - PlayerTutorial
+  - TagBananaTuto
+  - Player1Tutorial
+  - Player2Tutorial
   layers:
   - Default
   - TransparentFX

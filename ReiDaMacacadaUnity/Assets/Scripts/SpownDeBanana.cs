@@ -29,23 +29,23 @@ public class SpownDeBanana : MonoBehaviour
         switch (numeroRandonBanana)
         {
             case 0:
-                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX - 5.5f, SpownDeBanana.posicaoY + 3.2f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
+                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX - 2.75f, SpownDeBanana.posicaoY + 2.3f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
                 break;
 
             case 1:
-                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX + 5.5f, SpownDeBanana.posicaoY + 3.2f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
+                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX + 2.75f, SpownDeBanana.posicaoY + 2.3f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
                 break;
 
             case 2:
-                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX - 5.5f, SpownDeBanana.posicaoY - 1f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
+                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX - 2.75f, SpownDeBanana.posicaoY - 0.3f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
                 break;
 
             case 3:
-                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX + 5.5f, SpownDeBanana.posicaoY - 1f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
+                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX + 2.75f,SpownDeBanana.posicaoY - 0.3f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
                 break;
 
             case 4:
-                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX , SpownDeBanana.posicaoY + 0.9f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
+                Instantiate(this.objetoBanana, new Vector3(SpownDeBanana.posicaoX , SpownDeBanana.posicaoY + 1f, SpownDeBanana.posicaoZ + 10f), Quaternion.identity);
                 break;
         }
 

@@ -19,20 +19,27 @@ public class BananaController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player1Batalha"))
         {          
             spownBanana.SpownBanana();
             Destroy(gameObject);
         }
 
-        if ((collision.gameObject.CompareTag("Player1Tutorial")))
+        if (collision.gameObject.CompareTag("Player2Batalha"))
+        {
+            spownBanana.SpownBanana();
+            Destroy(gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Player1Tutorial"))
         {            
             Destroy(gameObject);
         }
 
-        if ((collision.gameObject.CompareTag("Player2Tutorial")))
+        if (collision.gameObject.CompareTag("Player2Tutorial"))
         {
             Destroy(gameObject);
         }
-    } 
+       
+    }
 }

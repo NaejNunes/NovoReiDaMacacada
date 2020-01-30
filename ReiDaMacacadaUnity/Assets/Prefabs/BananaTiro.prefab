@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6056928816930366080}
   m_Layer: 0
   m_Name: BananaTiro
-  m_TagString: TagBananaP1
+  m_TagString: TagBananaP1R
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8559584594996787603}
-  m_LocalRotation: {x: -0.32822055, y: 0.9446011, z: -0, w: 0}
+  m_LocalRotation: {x: -0.3282238, y: 0.9446, z: 0.00000006146106, w: -0.00000017687965}
   m_LocalPosition: {x: 0, y: 1.12, z: 0}
-  m_LocalScale: {x: 2.5084, y: 2.5084, z: 2.5084}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 56bb68d6c293deb49963ed420dbbda9e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -93,7 +93,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.06940287, y: -0.004226044}
@@ -124,7 +124,7 @@ MonoBehaviour:
   forceBanana: 500
   forcaDistancia: 0
   rbBanana: {fileID: 6056928816930366080}
-  playerBatalha: {fileID: 4638328447014464272, guid: e5b75da4124c65240acfe536b33b7432,
+  playerBatalha: {fileID: 8349709606263699249, guid: ac2d8054b576e8246a7465b1cb604bca,
     type: 3}
 --- !u!50 &6056928816930366080
 Rigidbody2D:

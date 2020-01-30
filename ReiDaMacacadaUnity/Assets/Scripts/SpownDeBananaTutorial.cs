@@ -12,14 +12,14 @@ public class SpownDeBananaTutorial: MonoBehaviour
     {
         if (player1.tutorial3 == true)
         {
-            Instantiate(this.BananaTutorial, new Vector3(SpownDeBananaTutorial.posicaoX - 4.8f, SpownDeBananaTutorial.posicaoY + 0.5f, SpownDeBananaTutorial.posicaoZ + 10f), Quaternion.identity);
+            Instantiate(this.BananaTutorial, new Vector2(SpownDeBananaTutorial.posicaoX - 5.2f, SpownDeBananaTutorial.posicaoY + 0.5f), Quaternion.identity);
         }     
 
         if (player1.tutorial5 == true)
         {
-            Instantiate(this.BananaTutorial, new Vector3(SpownDeBananaTutorial.posicaoX - 4.8f, SpownDeBananaTutorial.posicaoY - 5f, SpownDeBananaTutorial.posicaoZ + 10f), Quaternion.identity);
+            Instantiate(this.BananaTutorial, new Vector2(SpownDeBananaTutorial.posicaoX - 5.5f, SpownDeBananaTutorial.posicaoY - 5.2f), Quaternion.identity);
             bananaInfinita.SetActive(true);
-            Instantiate(this.BananaTutorial, new Vector3(SpownDeBananaTutorial.posicaoX + 5.2f, SpownDeBananaTutorial.posicaoY - 5f, SpownDeBananaTutorial.posicaoZ + 10f), Quaternion.identity);
+            Instantiate(this.BananaTutorial, new Vector2(SpownDeBananaTutorial.posicaoX + 5.5f, SpownDeBananaTutorial.posicaoY - 5.2f), Quaternion.identity);
         }
     }
 
@@ -28,6 +28,5 @@ public class SpownDeBananaTutorial: MonoBehaviour
     {        
         posicaoX = transform.position.x;
         posicaoY = transform.position.y;
-        posicaoZ = transform.position.z;         
     } 
 }

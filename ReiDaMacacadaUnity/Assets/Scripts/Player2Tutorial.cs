@@ -6,22 +6,28 @@ using UnityEngine.UI;
 
 public class Player2Tutorial : MonoBehaviour
 {
+    public KeyCode BotaoX;
+    public KeyCode BotaoY;
+    public KeyCode BotaoA;
+    public KeyCode BotaoB;
+    public KeyCode BotaoR;
+    public KeyCode BotaoL;
+
     public static float posX, posY, posZ;
-    public float horizontalMove, SpeedWalk, forceJump, tempoForca, forca, tempo;
+    public float horizontalMove, SpeedWalk, forceJump, tempoForca, forca, tempo, tempoPegarBanana, tempoJogarBanana, tempoAcertarTuto, tempoErro;
     private SpriteRenderer spriteMacaco;
     public Rigidbody2D corpoMacaco;
     public Text txtPontos;
     public int bananas, vida;
-    public bool noChao, atirarAtivo, direcaoR, tutorial1, tutorial2, tutorial3, tutorial4, tutorial5, fimTutorial, tuto1Ativado, tuto1Ativado2, puloCheck, bananaTutoCheck, tiroCheck, curaVidaCheck, player1Pronto, player2Pronto;
+    public bool noChao, atirarAtivo, direcaoR, tutorial1, tutorial2, tutorial3, tutorial4, tutorial5, fimTutorial, tuto1Ativado, tuto1Ativado2, puloCheck, bananaTutoCheck, tiroCheck, curaVidaCheck, player1Pronto, checkPegarBanana, checkAudioJogarBanana, checkAudioAcerto, checkAudioErro;
     private Animator anim;
     public GameObject[] vidas, tutoriais;
-    public GameObject bananaObj, bananaObj2, forcaSlider, forcaSlider2, painelPronto, fimTuto, bananaInfinita;
-    public AudioClip error;
-    public BananaTiro1 bananaTiro1;
-    public BananaTiro3 bananaTiro3;
-    public ForcaBanana1 forcaBanana1;
-    public ForcaBanana3 forcaBanana3;
-
+    public GameObject  bananaObj, bananaObj2, forcaSlider, forcaSlider2, painelPronto, fimTuto, bananaInfinita, mp3Error, mp3Pulo, mp3TransicaoBtn, mp3AtivarBtn, mp3JogarBanan, mp3PegarBanana;
+    public BananaTiro1 bananaTiro;
+    public BananaTiro3 bananaTiro2;
+    public ForcaBanana1 forcaBanana;
+    public ForcaBanana3 forcaBanana2;
+    public ControladorTutorial controlardorTuto;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +42,6 @@ public class Player2Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(bananaTiro1.forcaDistancia);
         posX = transform.position.x;
         posY = transform.position.y;
         posZ = transform.position.z;
@@ -63,13 +68,13 @@ public class Player2Tutorial : MonoBehaviour
         }
 
 
-        if (bananaTiro1.forcaDistancia >= 1000)
+        if (bananaTiro.forcaDistancia >= 1000)
         {
-            bananaTiro1.forcaDistancia = 1000;
+            bananaTiro.forcaDistancia = 1000;
         }
-        if (bananaTiro3.forcaDistancia2 <= -1000)
+        if (bananaTiro2.forcaDistancia2 <= -1000)
         {
-            bananaTiro3.forcaDistancia2 = -1000;
+            bananaTiro2.forcaDistancia2 = -1000;
         }
 
         //Controle dos Tutoriais
@@ -81,9 +86,12 @@ public class Player2Tutorial : MonoBehaviour
 
             if (tuto1Ativado == true && tuto1Ativado2 == true)
             {
+                mp3AtivarBtn.SetActive(true);
                 tutoriais[0].SetActive(false);
                 tutorial1 = false;
                 tutorial2 = true;
+                checkAudioAcerto = true;
+                tempoAcertarTuto = 0.5f;
             }
         }
 
@@ -94,9 +102,12 @@ public class Player2Tutorial : MonoBehaviour
 
             if (puloCheck == true)
             {
+                mp3AtivarBtn.SetActive(true);
                 tutoriais[1].SetActive(false);
                 tutorial2 = false;
                 tutorial3 = true;
+                checkAudioAcerto = true;
+                tempoAcertarTuto = 0.5f;
             }
         }
 
@@ -107,9 +118,12 @@ public class Player2Tutorial : MonoBehaviour
 
             if (bananaTutoCheck == true)
             {
+                mp3AtivarBtn.SetActive(true);
                 tutoriais[2].SetActive(false);
                 tutorial3 = false;
                 tutorial4 = true;
+                checkAudioAcerto = true;
+                tempoAcertarTuto = 0.5f;
             }
         }
 
@@ -120,9 +134,12 @@ public class Player2Tutorial : MonoBehaviour
 
             if (tiroCheck == true)
             {
+                mp3AtivarBtn.SetActive(true);
                 tutoriais[3].SetActive(false);
                 tutorial4 = false;
                 tutorial5 = true;
+                checkAudioAcerto = true;
+                tempoAcertarTuto = 0.5f;
             }
         }
 
@@ -138,28 +155,82 @@ public class Player2Tutorial : MonoBehaviour
 
             if (curaVidaCheck == true)
             {
-                tutorial5 = false;
+                mp3AtivarBtn.SetActive(true);
                 tutoriais[4].SetActive(false);
+                tutorial5 = false;
                 fimTutorial = true;
+                checkAudioAcerto = true;
+                tempoAcertarTuto = 0.5f;
             }
         }
         if (fimTutorial == true)
         {
             fimTuto.SetActive(true);
 
-            if (Input.GetKeyDown(KeyCode.V) && Input.GetKeyDown(KeyCode.B))
+            if (Input.GetKeyDown(BotaoL) && Input.GetKeyDown(BotaoR))
             {
+                mp3AtivarBtn.SetActive(true);
                 painelPronto.SetActive(true);
                 fimTuto.SetActive(false);
-                player1Pronto = true;
+                fimTutorial = false;
+                controlardorTuto.checkP2 = true;
+                checkAudioAcerto = true;
+                tempoAcertarTuto = 0.5f;
             }
-        }       
-    }
+        }
 
+        //TEMPO PARA SOM DE PEGAR A BANANA ACABAR
+        if (checkPegarBanana == true)
+        {
+            tempoPegarBanana -= Time.deltaTime;
+
+            if (tempoPegarBanana <= 0)
+            {
+                mp3PegarBanana.SetActive(false);
+                checkPegarBanana = false;
+            }
+        }
+
+        //TEMPO PARA SOM DE JOGAR A BANANA ACABAR
+        if (checkAudioJogarBanana == true)
+        {
+            tempoJogarBanana -= Time.deltaTime;
+
+            if (tempoJogarBanana <= 0)
+            {
+                mp3JogarBanan.SetActive(false);
+                checkAudioJogarBanana = false;
+            }
+        }
+
+        //TEMPO PARA PARAR O SOM DO TUTORIAL CERTO
+        if (checkAudioAcerto == true)
+        {
+            tempoAcertarTuto -= Time.deltaTime;
+
+            if (tempoAcertarTuto <= 0)
+            {
+                mp3AtivarBtn.SetActive(false);
+                checkAudioAcerto = false;
+            }
+        }
+
+        //TEMPO PARA PARAR O SOM DO ERRO
+        if (checkAudioErro == true)
+        {
+            tempoErro -= Time.deltaTime;
+
+            if (tempoErro <= 0)
+            {
+                mp3Error.SetActive(false);
+                checkAudioErro = false;
+            }
+        }
+    }
     public void Movimentacao(float h)
     {
         if (Input.GetAxisRaw("Horizontal2") > 0)
-        {
+        {          
             transform.Translate(Vector2.right * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = true;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
@@ -180,72 +251,80 @@ public class Player2Tutorial : MonoBehaviour
             anim.SetBool("Parado", true);
         }
 
-        if (Input.GetButtonDown("Jump2") && noChao == true)
+        if (Input.GetKeyDown(BotaoA) && noChao == true)
         {
+            mp3Pulo.SetActive(true);
             corpoMacaco.AddForce(new Vector2(0, forceJump));
-        }
+        }      
     }
 
     public void Acoes()
     {
         //RECUPERAR VIDA
-        if (Input.GetKeyDown(KeyCode.M) && bananas >= 3)
+        if (Input.GetKeyDown(BotaoY) && bananas >= 3)
         {
             vida += 1;
             bananas -= 3;
             curaVidaCheck = true;
         }
-        else if (Input.GetKeyDown(KeyCode.M) && bananas < 3)
+        else if (Input.GetKeyDown(BotaoY) && bananas < 3)
         {
-            AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
+            mp3Error.SetActive(true);
+            checkAudioErro = true;
+            tempoErro = 0.2f;
         }
 
-        if (Input.GetKey(KeyCode.P) && bananas > 0 && direcaoR == false)
+        if (Input.GetKey(BotaoX) && bananas > 0 && direcaoR == true)
         {
-            bananaTiro1.forcaDistancia += 10;
-            bananaTiro3.forcaDistancia2 = 0;
-            forcaBanana3.forcaTiroAuxiliar = 0;
+            bananaTiro.forcaDistancia -= 30;
+            bananaTiro2.forcaDistancia2 = 0;
+            forcaBanana.forcaTiroBanana += 30;
             forcaSlider.SetActive(true);
             forcaSlider2.SetActive(false);
         }
 
-        else if (Input.GetKey(KeyCode.P) && bananas > 0 && direcaoR == true)
+        else if (Input.GetKey(BotaoX) && bananas > 0 && direcaoR == false)
         {
-            bananaTiro3.forcaDistancia2 -= 10;
-            bananaTiro1.forcaDistancia = 0;
-            forcaBanana3.forcaTiroAuxiliar += 10;
+            bananaTiro2.forcaDistancia2 += 30;
+            bananaTiro.forcaDistancia = 0;
             forcaSlider.SetActive(false);
             forcaSlider2.SetActive(true);
-        }
-        else if (Input.GetKeyUp(KeyCode.P) && bananas > 0 && direcaoR == true)
-        {
-            Instantiate(this.bananaObj2, new Vector3(Player2Tutorial.posX - 1, Player2Tutorial.posY + 1, Player2Tutorial.posZ + 10f), Quaternion.identity);
-            bananaTiro1.forcaDistancia = 0;
-            forcaBanana1.forcaTiroBanana = 0;
-            bananaTiro3.forcaDistancia2 = 0;
-            forcaBanana3.forcaTiroAuxiliar = 0;
-            bananas--;
-            forcaSlider.SetActive(false);
-            forcaSlider2.SetActive(false);
-            tiroCheck = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.P) && bananas > 0 && direcaoR == false)
-        {
-            Instantiate(this.bananaObj, new Vector3(Player2Tutorial.posX + 1, Player2Tutorial.posY + 1, Player2Tutorial.posZ + 10f), Quaternion.identity);
-            bananaTiro1.forcaDistancia = 0;
-            forcaBanana1.forcaTiroBanana = 0;
-            bananaTiro3.forcaDistancia2 = 0;
-            forcaBanana3.forcaTiroAuxiliar = 0;
-            bananas--;
-            forcaSlider.SetActive(false);
-            forcaSlider2.SetActive(false);
-            tiroCheck = true;
 
         }
-
-        else if (Input.GetKey(KeyCode.P) && bananas == 0)
+        else if (Input.GetKeyUp(BotaoX) && bananas > 0 && direcaoR == true)
         {
-            AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
+            mp3JogarBanan.SetActive(true);
+            Instantiate(this.bananaObj, new Vector3(Player2Tutorial.posX - 1, Player2Tutorial.posY +1, Player2Tutorial.posZ + 10f), Quaternion.identity);
+            bananaTiro.forcaDistancia = 0;
+            forcaBanana.forcaTiroBanana = 0;
+            bananaTiro2.forcaDistancia2 = 0;
+            forcaBanana2.forcaTiroAuxiliar = 0;
+            bananas--;
+            forcaSlider.SetActive(false);
+            tiroCheck = true;
+            checkAudioJogarBanana = true;
+            tempoJogarBanana = 0.2f;
+        }
+        else if (Input.GetKeyUp(BotaoX) && bananas > 0 && direcaoR == false)
+        {
+            mp3JogarBanan.SetActive(true);
+            Instantiate(this.bananaObj2, new Vector3(Player2Tutorial.posX + 1, Player2Tutorial.posY + 1, Player2Tutorial.posZ + 10f), Quaternion.identity);
+            bananaTiro.forcaDistancia = 0;
+            forcaBanana.forcaTiroBanana = 0;
+            bananaTiro2.forcaDistancia2 = 0;
+            forcaBanana2.forcaTiroAuxiliar = 0;
+            bananas--;
+            forcaSlider2.SetActive(false);
+            tiroCheck = true;
+            checkAudioJogarBanana = true;
+            tempoJogarBanana = 0.2f;
+        }
+
+        else if (Input.GetKeyUp(BotaoX) && bananas == 0)
+        {
+            mp3Error.SetActive(true);
+            checkAudioErro = true;
+            tempoErro = 0.2f;
         }
     }
 
@@ -278,21 +357,27 @@ public class Player2Tutorial : MonoBehaviour
             vidas[1].SetActive(false);
             vidas[2].SetActive(false);
 
-            Time.timeScale = 0;
+            SceneManager.LoadScene("VencedorP2");
         }
-    }
+    } 
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("TagBanana"))
         {
+            mp3PegarBanana.SetActive(true);
             bananas++;
+            checkPegarBanana = true;
+            tempoPegarBanana = 0.5f;
         }
 
         if (collision.gameObject.CompareTag("TagBananaTuto"))
         {
+            mp3PegarBanana.SetActive(true);
             bananas++;
             bananaTutoCheck = true;
+            checkPegarBanana = true;
+            tempoPegarBanana = 0.5f;
         }
     }
 
@@ -300,6 +385,7 @@ public class Player2Tutorial : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("TagChao") || collision.gameObject.CompareTag("TagPlataforma"))
         {
+            mp3Pulo.SetActive(false);
             noChao = true;
         }
     }

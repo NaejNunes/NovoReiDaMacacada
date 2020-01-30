@@ -7,7 +7,7 @@ public class ForcaBanana1 : MonoBehaviour
 {
     public float forcaTiroBanana;
     public GameObject SliderBanana;
-    public BananaTiro1 bananaTiro1;
+    public PlayerBatalha playerBatalha;
 
     // Start is called before the first frame update
     void Start()
@@ -18,21 +18,24 @@ public class ForcaBanana1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        forcaTiroBanana = bananaTiro1.forcaDistancia;
+        //forcaTiroBanana = bananaTiro1.forcaDistancia;
 
         if (forcaTiroBanana > 0 && forcaTiroBanana <= 400)
         {
             SliderBanana.GetComponent<Image>().color = Color.green;
+            playerBatalha.forcaDano = -100;
         }
 
         else if (forcaTiroBanana > 400 && forcaTiroBanana <= 700)
         {
             SliderBanana.GetComponent<Image>().color = Color.yellow;
+            playerBatalha.forcaDano = -250;
         }
 
         else if(forcaTiroBanana > 700 && forcaTiroBanana <= 1000)
         {
             SliderBanana.GetComponent<Image>().color = Color.red;
+            playerBatalha.forcaDano = -400;
         }
 
         if (forcaTiroBanana >= 1000)

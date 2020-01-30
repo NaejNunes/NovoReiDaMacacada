@@ -15,6 +15,12 @@ TagManager:
   - TagBananaTuto
   - Player1Tutorial
   - Player2Tutorial
+  - Player1Batalha
+  - Player2Batalha
+  - TagBananaP1R
+  - TagBananaP1L
+  - TagBananaP2R
+  - TagBananaP2L
   layers:
   - Default
   - TransparentFX

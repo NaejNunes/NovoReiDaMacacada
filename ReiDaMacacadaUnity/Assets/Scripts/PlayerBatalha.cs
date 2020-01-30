@@ -6,43 +6,52 @@ using UnityEngine.UI;
 
 public class PlayerBatalha : MonoBehaviour
 {
+    public KeyCode BotaoX;
+    public KeyCode BotaoY;
+    public KeyCode BotaoA;
+    public KeyCode BotaoB;
+    public KeyCode BotaoR;
+    public KeyCode BotaoL;
+
     public static float posX, posY, posZ;
-    public float horizontalMove, SpeedWalk, forceJump, tempoForca, forca;
+    public float horizontalMove, SpeedWalk, forceJump, tempoForca, forca, tempo, tempoPegarBanana, tempoJogarBanana, tempoAcertarTuto, tempoErro, tempoRecupVida, tempoAudioDano, tempoDano, forcaDano;
     private SpriteRenderer spriteMacaco;
     public Rigidbody2D corpoMacaco;
     public Text txtPontos;
     public int bananas, vida;
-    public bool noChao, atirarAtivo, direcaoR;
+    public bool noChao, atirarAtivo, direcaoR, puloCheck, tiroCheck, curaVidaCheck, checkPegarBanana, checkAudioJogarBanana, checkAudioAcerto, checkAudioErro, checkAudioRecupVida, checkAudioDano, checkDano;
     private Animator anim;
-    public TempoIniciar tempoIniciar;
     public GameObject[] vidas;
-    public GameObject painelVencedor, bananaObj, bananaObj2, forcaSlider, forcaSlider2;
-    public AudioClip error;
+    public GameObject bananaObj, bananaObj2, forcaSlider, forcaSlider2, mp3Error, mp3Pulo, mp3TransicaoBtn, mp3AtivarBtn, mp3JogarBanan, mp3PegarBanana, mp3RecupVida, mp3audioDano;
     public BananaTiro bananaTiro;
     public BananaTiro2 bananaTiro2;
     public ForcaBanana forcaBanana;
     public ForcaBanana2 forcaBanana2;
+    public Color corDano;
+    public TempoIniciar tempoIniciar;
 
     // Start is called before the first frame update
     void Start()
     {
         vida = 3;
+
         corpoMacaco = gameObject.GetComponent<Rigidbody2D>();
+
+        AtualizarVida();
 
         forcaSlider.SetActive(false);
         forcaSlider2.SetActive(false);
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        posX = transform.position.x;
-        posY = transform.position.y;
-        posZ = transform.position.z;
-
         if (tempoIniciar.comecarJogo == true)
         {
+            posX = transform.position.x;
+            posY = transform.position.y;
+            posZ = transform.position.z;
+
             horizontalMove = Input.GetAxisRaw("Horizontal");
 
             anim = GetComponent<Animator>();
@@ -50,40 +59,133 @@ public class PlayerBatalha : MonoBehaviour
             Movimentacao(horizontalMove);
 
             Acoes();
+            ControladorVida();
 
             txtPontos.text = "" + bananas;
 
             if (GetComponent<SpriteRenderer>().flipX == true)
             {
-                direcaoR = false;               
+                direcaoR = false;
             }
 
             else if (GetComponent<SpriteRenderer>().flipX == false)
             {
-                direcaoR = true;              
+                direcaoR = true;
+            }
+
+            if (bananaTiro.forcaDistancia >= 1000)
+            {
+                bananaTiro.forcaDistancia = 1000;
+            }
+            if (bananaTiro2.forcaDistancia2 <= -1000)
+            {
+                bananaTiro2.forcaDistancia2 = -1000;
+            }
+
+            //TEMPO PARA SOM DE PEGAR A BANANA ACABAR
+            if (checkPegarBanana == true)
+            {
+                tempoPegarBanana -= Time.deltaTime;
+
+                if (tempoPegarBanana <= 0)
+                {
+                    mp3PegarBanana.SetActive(false);
+                    checkPegarBanana = false;
+                }
+            }
+
+            //TEMPO PARA SOM DE JOGAR A BANANA ACABAR
+            if (checkAudioJogarBanana == true)
+            {
+                tempoJogarBanana -= Time.deltaTime;
+
+                if (tempoJogarBanana <= 0)
+                {
+                    mp3JogarBanan.SetActive(false);
+                    checkAudioJogarBanana = false;
+                }
+            }
+
+            //TEMPO PARA PARAR O SOM DO TUTORIAL CERTO
+            if (checkAudioAcerto == true)
+            {
+                tempoAcertarTuto -= Time.deltaTime;
+
+                if (tempoAcertarTuto <= 0)
+                {
+                    mp3AtivarBtn.SetActive(false);
+                    checkAudioAcerto = false;
+                }
+            }
+
+            //TEMPO PARA PARAR O SOM DO ERRO
+            if (checkAudioErro == true)
+            {
+                tempoErro -= Time.deltaTime;
+
+                if (tempoErro <= 0)
+                {
+                    mp3Error.SetActive(false);
+                    checkAudioErro = false;
+                }
+            }
+
+            //TEMPO PARA PARAR O SOM RECUPERAR VIDA
+            if (checkAudioRecupVida == true)
+            {
+                tempoRecupVida -= Time.deltaTime;
+
+                if (tempoRecupVida <= 0)
+                {
+                    mp3RecupVida.SetActive(false);
+                    checkAudioRecupVida = false;
+                }
+            }
+
+            //TEMPO PARA PARAR O SOM DE DANO
+            if (checkAudioDano == true)
+            {
+                tempoAudioDano -= Time.deltaTime;
+
+                if (tempoAudioDano <= 0)
+                {
+                    mp3audioDano.SetActive(false);
+                    checkAudioDano = false;
+                }
+            }
+
+            //TEMPO PARA PARAR DANO
+            if (checkDano == true)
+            {
+                tempoDano -= Time.deltaTime;
+
+                if (tempoDano <= 0)
+                {
+                    GetComponent<SpriteRenderer>().color = Color.white;
+                    checkDano = false;
+                }
+            }
+
+            //LIMITADOR DE VIDA
+            if (vida > 3)
+            {
+                vida = 3;
+            }
+            if (vida < 0)
+            {
+                vida = 0;
             }
         }
-
-        if (bananaTiro.forcaDistancia >= 1000)
-        {
-            bananaTiro.forcaDistancia = 1000;
-        }
-        if (bananaTiro2.forcaDistancia2 <= -1000)
-        {
-            bananaTiro2.forcaDistancia2 = -1000;
-        }
-
     }
-
+     
     public void Movimentacao(float h)
     {
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            
             transform.Translate(Vector2.right * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = false;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
-            anim.SetBool("Parado", false);         
+            anim.SetBool("Parado", false);
         }
 
         else if (Input.GetAxisRaw("Horizontal") < 0)
@@ -91,74 +193,93 @@ public class PlayerBatalha : MonoBehaviour
             transform.Translate(Vector2.left * SpeedWalk * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = true;
             anim.SetFloat("posX", Mathf.Abs(horizontalMove));
-            anim.SetBool("Parado", false);         
+            anim.SetBool("Parado", false);
         }
         else
         {
             anim.SetBool("Parado", true);
         }
 
-        if (Input.GetButtonDown("Jump") && noChao == true)
+        if (Input.GetKeyDown(BotaoA) && noChao == true)
         {
+            mp3Pulo.SetActive(true);
             corpoMacaco.AddForce(new Vector2(0, forceJump));
-        }      
+        }
     }
 
     public void Acoes()
     {
         //RECUPERAR VIDA
-        if (Input.GetKeyDown(KeyCode.I) && bananas >= 5)
+        if (Input.GetKeyDown(BotaoY) && bananas >= 3 && vida <3)
         {
+            mp3RecupVida.SetActive(true);
             vida += 1;
+            bananas -= 3;
+            curaVidaCheck = true;
+            tempoRecupVida = 0.2f;
+            checkAudioRecupVida = true;
         }
-        else if (Input.GetKeyDown(KeyCode.I) && bananas < 3)
+        else if (Input.GetKeyDown(BotaoY) && bananas < 3)
         {
-            AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
+            mp3Error.SetActive(true);
+            checkAudioErro = true;
+            tempoErro = 0.2f;
         }
 
-        if (Input.GetKey(KeyCode.O) && bananas > 0 && direcaoR == true)
+        if (Input.GetKey(BotaoX) && bananas > 0 && direcaoR == true)
         {
-            bananaTiro.forcaDistancia += 10;
+            bananaTiro.forcaDistancia += 30;
             bananaTiro2.forcaDistancia2 = 0;
             forcaBanana2.forcaTiroAuxiliar = 0;
             forcaSlider.SetActive(true);
             forcaSlider2.SetActive(false);
         }
 
-        else if (Input.GetKey(KeyCode.O) && bananas > 0 && direcaoR == false)
+        else if (Input.GetKey(BotaoX) && bananas > 0 && direcaoR == false)
         {
-            bananaTiro2.forcaDistancia2 -= 10;
+            bananaTiro2.forcaDistancia2 -= 30;
             bananaTiro.forcaDistancia = 0;
-            forcaBanana2.forcaTiroAuxiliar += 10;
+            forcaBanana2.forcaTiroAuxiliar += 30;
             forcaSlider.SetActive(false);
             forcaSlider2.SetActive(true);
+
         }
-        else if (Input.GetKeyUp(KeyCode.O) && bananas > 0 && direcaoR == true)
+
+        else if (Input.GetKeyUp(BotaoX) && bananas > 0 && direcaoR == true)
         {
-            Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX + 1, PlayerBatalha.posY +1, PlayerBatalha.posZ + 10f), Quaternion.identity);
+            mp3JogarBanan.SetActive(true);
+            Instantiate(this.bananaObj, new Vector3(PlayerBatalha.posX + 0.8f, PlayerBatalha.posY + 0.6f, PlayerBatalha.posZ + 10f), Quaternion.identity);
             bananaTiro.forcaDistancia = 0;
             forcaBanana.forcaTiroBanana = 0;
             bananaTiro2.forcaDistancia2 = 0;
             forcaBanana2.forcaTiroAuxiliar = 0;
             bananas--;
             forcaSlider.SetActive(false);
+            tiroCheck = true;
+            checkAudioJogarBanana = true;
+            tempoJogarBanana = 0.2f;
         }
-        else if (Input.GetKeyUp(KeyCode.O) && bananas > 0 && direcaoR == false)
+        else if (Input.GetKeyUp(BotaoX) && bananas > 0 && direcaoR == false)
         {
-            Instantiate(this.bananaObj2, new Vector3(PlayerBatalha.posX - 1, PlayerBatalha.posY + 1, PlayerBatalha.posZ + 10f), Quaternion.identity);
+            mp3JogarBanan.SetActive(true);
+            Instantiate(this.bananaObj2, new Vector3(PlayerBatalha.posX - 0.8f, PlayerBatalha.posY + 0.6f, PlayerBatalha.posZ + 10f), Quaternion.identity);
             bananaTiro.forcaDistancia = 0;
             forcaBanana.forcaTiroBanana = 0;
             bananaTiro2.forcaDistancia2 = 0;
             forcaBanana2.forcaTiroAuxiliar = 0;
             bananas--;
             forcaSlider2.SetActive(false);
+            tiroCheck = true;
+            checkAudioJogarBanana = true;
+            tempoJogarBanana = 0.2f;
         }
 
-        else if (Input.GetKey(KeyCode.O) && bananas == 0)
+        else if (Input.GetKeyUp(BotaoX) && bananas == 0)
         {
-            AudioSource.PlayClipAtPoint(error, Camera.main.transform.position * Time.deltaTime);
-        }       
-
+            mp3Error.SetActive(true);
+            checkAudioErro = true;
+            tempoErro = 0.2f;
+        }
     }
 
     public void ControladorVida()
@@ -168,6 +289,7 @@ public class PlayerBatalha : MonoBehaviour
             vidas[0].SetActive(true);
             vidas[1].SetActive(true);
             vidas[2].SetActive(true);
+            AtualizarVida();
         }
 
         if (vida == 2)
@@ -175,6 +297,7 @@ public class PlayerBatalha : MonoBehaviour
             vidas[0].SetActive(false);
             vidas[1].SetActive(true);
             vidas[2].SetActive(true);
+            AtualizarVida();
         }
 
         if (vida == 1)
@@ -182,6 +305,7 @@ public class PlayerBatalha : MonoBehaviour
             vidas[0].SetActive(false);
             vidas[1].SetActive(false);
             vidas[2].SetActive(true);
+            AtualizarVida();
         }
 
         if (vida == 0)
@@ -189,29 +313,60 @@ public class PlayerBatalha : MonoBehaviour
             vidas[0].SetActive(false);
             vidas[1].SetActive(false);
             vidas[2].SetActive(false);
+            AtualizarVida();
 
-            Time.timeScale = 0;
+            SceneManager.LoadScene("FimBatalha");
 
-            painelVencedor.SetActive(true);
         }
+    }
 
-
-    } 
+    public void AtualizarVida()
+    {
+        PlayerPrefs.SetInt("VidaP1", vida);
+    }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("TagBanana"))
         {
+            mp3PegarBanana.SetActive(true);
             bananas++;
+            checkPegarBanana = true;
+            tempoPegarBanana = 0.5f;
         }
-    }
+
+        if (collision.gameObject.CompareTag("TagBananaP2R"))
+        {
+            mp3audioDano.SetActive(true);
+            GetComponent<SpriteRenderer>().color = corDano;
+            corpoMacaco.AddForce(new Vector2(forcaDano, 0));
+            vida--;
+            tempoAudioDano = 0.2f;
+            tempoDano = 0.5f;
+            checkAudioDano = true;
+            checkDano = true;
+        }
+
+        if (collision.gameObject.CompareTag("TagBananaP2L"))
+        {
+            mp3audioDano.SetActive(true);
+            GetComponent<SpriteRenderer>().color = corDano;
+            corpoMacaco.AddForce(new Vector2(forcaDano, 0));
+            vida--;
+            tempoAudioDano = 0.2f;
+            tempoDano = 0.5f;
+            checkAudioDano = true;
+            checkDano = true;
+        }
+    } 
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("TagChao") || collision.gameObject.CompareTag("TagPlataforma"))
         {
+            mp3Pulo.SetActive(false);
             noChao = true;
-        }
+        }       
     }
 
     public void OnCollisionExit2D(Collision2D collision)
@@ -219,6 +374,8 @@ public class PlayerBatalha : MonoBehaviour
         if (collision.gameObject.CompareTag("TagChao") || collision.gameObject.CompareTag("TagPlataforma"))
         {
             noChao = false;
+            puloCheck = true;
+
         }
     }
 }

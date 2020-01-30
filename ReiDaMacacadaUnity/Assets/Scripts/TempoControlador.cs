@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TempoControlador : MonoBehaviour
@@ -12,7 +13,7 @@ public class TempoControlador : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tempoJogo = 120f;        
+             
     }
 
     // Update is called once per frame
@@ -34,13 +35,9 @@ public class TempoControlador : MonoBehaviour
                 }
                 if (tempoJogo <= 0)
                 {
-                    Time.timeScale = 0;
+                    SceneManager.LoadScene("FimClassico");                                      
                 }
-                else
-                {
-                    Time.timeScale = 1;
-                }
-               
+
                 var sliderTempo = transform.GetChild(0).GetComponentInChildren<Slider>();
                 sliderTempo.value = tempoJogo;
             }          

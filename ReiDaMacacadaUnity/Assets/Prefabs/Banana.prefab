@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8788736054349935198}
   - component: {fileID: 8996819289156230109}
   - component: {fileID: 3016789634133573015}
-  - component: {fileID: 2135301106853007010}
   m_Layer: 0
   m_Name: Banana
   m_TagString: TagBanana
@@ -28,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8559584594996787603}
-  m_LocalRotation: {x: -0.32822055, y: 0.9446011, z: -0, w: 0}
+  m_LocalRotation: {x: -0.3282238, y: 0.9446, z: 0.00000006146106, w: -0.00000017687965}
   m_LocalPosition: {x: 0, y: 1.12, z: 0}
-  m_LocalScale: {x: 2.5084, y: 2.5084, z: 2.5084}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -141,22 +140,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf52a1d2927a1a4fb992250e3f4ec7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spownBanana: {fileID: 1005059698376282513, guid: 1892e7a5b2ef7b34db30f611c13c76ab,
+  spownBanana: {fileID: 6360363546263199559, guid: 254e7a41192404b4f81eec148fae2a5a,
     type: 3}
---- !u!114 &2135301106853007010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8559584594996787603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70ea4d62bde90594f8bcf0a834041206, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numeroRandonBanana: 0
-  objetoBanana: {fileID: 8559584594996787603}
-  objBananaTutorial: {fileID: 8559584594996787603, guid: b401782b844497a4295d3ac4d347ca51,
-    type: 3}
-  tutorial: 0

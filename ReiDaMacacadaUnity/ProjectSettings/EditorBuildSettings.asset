@@ -6,9 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GamePlay.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: d8e81fa9d494d8d49848c49de1b3a739
+  - enabled: 1
+    path: Assets/Scenes/Creditos.unity
+    guid: f0b5ef3d1df3f00489f1cb9eb8f162c6
+  - enabled: 1
+    path: Assets/Scenes/Escolha.unity
+    guid: 4748b88370d1cbe47a8752784a203128
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: 00866198c87a8e84abbd17a389aaa592
+  - enabled: 1
+    path: Assets/Scenes/ModoBatalha.unity
+    guid: 578865c1742c0334c94d81c50df544ba
+  - enabled: 1
+    path: Assets/Scenes/FimBatalha.unity
+    guid: dc8673f2b1f4fc34da37fb9fee3caa4d
+  - enabled: 1
+    path: Assets/Scenes/ModoClassico.unity
+    guid: e4cb4b282205e8647a06824df3134e2f
+  - enabled: 1
+    path: Assets/Scenes/FimClassico.unity
+    guid: 3050d46193c9764488c3454660659f9b
   m_configObjects: {}

@@ -21,7 +21,7 @@ public class BananaTiro2 : MonoBehaviour
         
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("TagLimite") || collision.gameObject.CompareTag("TagChao"))
         {

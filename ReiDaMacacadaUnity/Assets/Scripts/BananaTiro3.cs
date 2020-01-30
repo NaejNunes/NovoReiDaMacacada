@@ -6,7 +6,7 @@ public class BananaTiro3 : MonoBehaviour
 {
     public float forceBanana, forcaDistancia2;
     public Rigidbody2D  rbBanana;
-    public PlayerBatalha playerBatalha;
+    public PlayerBatalha2 playerBatalha;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class BananaTiro3 : MonoBehaviour
         
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("TagLimite") || collision.gameObject.CompareTag("TagChao"))
         {

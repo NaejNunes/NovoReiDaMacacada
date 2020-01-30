@@ -11,7 +11,7 @@ public class TempoIniciar : MonoBehaviour
     public int tempoInteiro;
     public Text txtContagemRegre;
     public GameObject painelContagem, spowBanana;
-    public AudioClip beep, sirene, temaJogo;
+    public AudioClip beep, sirene;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +56,6 @@ public class TempoIniciar : MonoBehaviour
             comecarJogo = true;
             painelContagem.SetActive(false);
             spowBanana.SetActive(true);
-            AudioSource.PlayClipAtPoint(temaJogo, Camera.main.transform.position * Time.deltaTime);
         }
     }
 }
